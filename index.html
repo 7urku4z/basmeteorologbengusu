@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LTFM Hava Tahmin Panosu - Açık Kaynaklar & Turkuaz-Pembe Tema</title>
+    <style>
+        :root {
+            --primary-turkuaz: #00a896;
+            --dark-turkuaz: #028090;
+            --light-turkuaz: #e0f2f1;
+            --soft-pink: #ffb7b2;
+            --dark-pink: #e56b6f;
+            --bg-color: #f7fff7;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Sorumluluk Kutusu */
+        .responsibilities {
+            background-color: #ffe5ec;
+            border: 2px solid var(--dark-pink);
+            color: #800f2f;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .responsibilities ol {
+            margin: 5px 0 0 20px;
+            padding: 0;
+        }
+
+        /* Sekme Butonları */
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            border-bottom: 3px solid var(--primary-turkuaz);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-button {
+            background-color: var(--light-turkuaz);
+            border: none;
+            outline: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-turkuaz);
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .tab-button:hover {
+            background-color: var(--soft-pink);
+            color: #fff;
+        }
+        .tab-button.active {
+            background-color: var(--primary-turkuaz);
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Sekme İçerikleri */
+        .tab-content {
+            display: none;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,168,150,0.1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tablo Stilleri */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #b2dfdb;
+            padding: 8px 10px;
+            text-align: center;
+            font-size: 13px;
+        }
+        th {
+            background-color: var(--primary-turkuaz);
+            color: white;
+            font-weight: bold;
+        }
+        .bg-today {
+            background-color: var(--dark-turkuaz) !important;
+        }
+        .bg-tomorrow {
+            background-color: var(--dark-pink) !important;
+        }
+        .avg-column {
+            background-color: #fff0f3;
+            font-weight: bold;
+            color: #800f2f;
+        }
+        .avg-border-left {
+            border-left: 2px solid var(--dark-pink);
+        }
+        .source-tag {
+            font-size: 11px;
+            color: #fff;
+            background-color: var(--dark-turkuaz);
+            padding: 3px 8px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .info-box {
+            background-color: #e0f2f1;
+            border-left: 5px solid var(--primary-turkuaz);
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+
+        /* Form Stilleri */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--dark-turkuaz);
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1.5px solid #b2dfdb;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .form-row .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .btn {
+            background-color: var(--primary-turkuaz);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-right: 5px;
+        }
+        .btn:hover {
+            background-color: var(--dark-turkuaz);
+        }
+        .btn-pink {
+            background-color: var(--dark-pink);
+        }
+        .btn-pink:hover {
+            background-color: #c9184a;
+        }
+        .btn-danger {
+            background-color: #d90429;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-danger:hover {
+            background-color: #ef233c;
+        }
+        .btn-undo {
+            background-color: #028090;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        .btn-undo:hover {
+            background-color: #00a896;
+        }
+        .btn-undo:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .status-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .status-ontime {
+            background-color: #d8f3dc;
+            color: #1b4332;
+        }
+        .status-late {
+            background-color: #ffccd5;
+            color: #590d22;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .card {
+            flex: 1;
+            min-width: 200px;
+            background-color: #f0fdf4;
+            border: 1px solid #b2dfdb;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .card-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--dark-turkuaz);
+            margin-top: 5px;
+        }
+
+        .justification-box {
+            background-color: #fff0f3;
+            border: 1px solid var(--soft-pink);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Üç Temel Sorumluluk Kutusu -->
+    <div class="responsibilities">
+        📌 UNUTMAMAN GEREKEN ÜÇ SORUMLULUK:
+        <ol>
+            <li>EN AZ %70 KATILIM ZORUNLUDUR. (Planlanan tahmin günlerinin en az %70'inde eksiksiz tahmininizi zamanında gönderin)</li>
+            <li>HER TAHMİN GÜNÜ İSTANBUL SAATİYLE 21:00'E KADAR GÖNDERİN. (21:00:00 zamanındadır; 21:00:01 geç kalmıştır)</li>
+            <li>HER GÜN DÜNÜ KONTROL EDİN VE DERS ÇIKARIN. (Dünkü tahmini gözlemlerle karşılaştırıp hatalarınızdan ders yazın)</li>
+        </ol>
+    </div>
+
+    <!-- 5 Sekme Butonu -->
+    <div class="tab-buttons">
+        <button class="tab-button active" onclick="showTab('read-weather', this)">Read weather</button>
+        <button class="tab-button" onclick="showTab('make-forecast', this)">Make a forecast</button>
+        <button class="tab-button" onclick="showTab('check-errors', this)">Check errors</button>
+        <button class="tab-button" onclick="showTab('review-progress', this)">Review progress</button>
+        <button class="tab-button" onclick="showTab('save-report', this)">Save your report</button>
+    </div>
+
+    <!-- 1. SEKME: Read weather -->
+    <div id="read-weather" class="tab-content active">
+        <h2>Read Weather (Açık Kaynak Tahmin Modelleri)</h2>
+        <p><strong>Lokasyon:</strong> İstanbul Havalimanı (LTFM / Türkiye - 41.27° N, 28.75° E)</p>
+        
+        <h3>1. Anlık Gözlem Verisi (LTFM Meteoroloji İstasyonu / Weather Underground)</h3>
+        <div class="table-responsive">
+            <table style="min-width: 600px;">
+                <thead>
+                    <tr>
+                        <th>Parametre</th>
+                        <th>Gözlenen Değer</th>
+                        <th>Birim</th>
+                        <th>Veri Kaynağı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sıcaklık (2m)</td>
+                        <td>18.5</td>
+                        <td>°C</td>
+                        <td><span class="source-tag">Weather Underground & LTFM METAR</span></td>
+                    </tr>
+                    <tr>
+                        <td>Sürekli Rüzgâr Hızı</td>
+                        <td>14.0</td>
+                        <td>knots</td>
+                        <td><span class="source-tag">Weather Underground (Yerel İstasyon Ağı)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>2. Türkiye (LTFM) Açık Kaynak Tahmin Modelleri (2 Günlük Rapor)</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th rowspan="2">Kaynak / Servis</th>
+                        <th rowspan="2">Model Altyapısı & Detay</th>
+                        <th colspan="4" class="bg-today">1. GÜN (Bugün)</th>
+                        <th colspan="4" class="bg-tomorrow">2. GÜN (Yarın)</th>
+                        <th rowspan="2" class="avg-column avg-border-left">Ortalama 1. GÜN</th>
+                        <th rowspan="2" class="avg-column">Ortalama 2. GÜN</th>
+                    </tr>
+                    <tr>
+                        <!-- 1. Gün -->
+                        <th class="bg-today">Tmax (°C)</th>
+                        <th class="bg-today">Tmin (°C)</th>
+                        <th class="bg-today">Yağış (mm)</th>
+                        <th class="bg-today">Rüzgâr (kt)</th>
+                        <!-- 2. Gün -->
+                        <th class="bg-tomorrow">Tmax (°C)</th>
+                        <th class="bg-tomorrow">Tmin (°C)</th>
+                        <th class="bg-tomorrow">Yağış (mm)</th>
+                        <th class="bg-tomorrow">Rüzgâr (kt)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Windy.com</strong></td>
+                        <td>ECMWF, GFS, ICON & AROME</td>
+                        <td>20.5</td><td>14.0</td><td>0.0</td><td>15.0</td>
+                        <td>21.5</td><td>13.5</td><td>0.0</td><td>18.0</td>
+                        <td rowspan="7" class="avg-column avg-border-left" style="vertical-align: middle;">
+                            <strong>Tmax:</strong> 20.1 °C<br>
+                            <strong>Tmin:</strong> 14.5 °C<br>
+                            <strong>Yağış:</strong> 0.3 mm<br>
+                            <strong>Rüzgâr:</strong> 16.5 kt
+                        </td>
+                        <td rowspan="7" class="avg-column" style="vertical-align: middle;">
+                            <strong>Tmax:</strong> 21.2 °C<br>
+                            <strong>Tmin:</strong> 13.8 °C<br>
+                            <strong>Yağış:</strong> 1.0 mm<br>
+                            <strong>Rüzgâr:</strong> 19.3 kt
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Meteoblue</strong></td>
+                        <td>MultiModel & Yüksek Çöz.</td>
+                        <td>19.8</td><td>14.5</td><td>0.5</td><td>16.5</td>
+                        <td>20.8</td><td>14.0</td><td>1.2</td><td>20.0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Open-Meteo</strong></td>
+                        <td>Açık Kaynaklı API</td>
+                        <td>20.0</td><td>14.2</td><td>0.0</td><td>17.0</td>
+                        <td>21.0</td><td>13.8</td><td>0.8</td><td>19.0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ventusky</strong></td>
+                        <td>3D/2D Görsel Harita</td>
+                        <td>20.5</td><td>14.8</td><td>0.2</td><td>18.0</td>
+                        <td>21.2</td><td>14.1</td><td>1.5</td><td>21.0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>W. Underground</strong></td>
+                        <td>İstasyon Bazlı Ağ Verisi</td>
+                        <td>19.5</td><td>15.0</td><td>0.0</td><td>15.5</td>
+                        <td>21.0</td><td>13.5</td><td>0.5</td><td>18.5</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NOAA GFS & NWS</strong></td>
+                        <td>ABD Küresel Modeli</td>
+                        <td>20.8</td><td>14.0</td><td>0.0</td><td>16.0</td>
+                        <td>22.0</td><td>13.2</td><td>0.0</td><td>18.0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DWD Open Data</strong></td>
+                        <td>Almanya Servisi (ICON)</td>
+                        <td>19.6</td><td>15.2</td><td>1.0</td><td>17.5</td>
+                        <td>20.7</td><td>14.2</td><td>2.8</td><td>20.5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="info-box">
+            🔍 <strong>Konsensüs Analizi (2 Günlük Rapor):</strong><br>
+            Yukarıdaki tabloda yer alan 7 farklı hava modeli, hataları en aza indirmek için harmanlanmıştır. En sağdaki pembe sütunlarda yer alan <strong>"Ortalama 1. GÜN"</strong> ve <strong>"Ortalama 2. GÜN"</strong> değerleri, model bazlı sapmaları törpüleyerek kendi nihai tahmininizi oluşturmanızda size rehberlik edecektir.
+        </div>
+    </div>
+
+    <!-- 2. SEKME: Make a forecast -->
+    <div id="make-forecast" class="tab-content">
+        <h2>Make a Forecast (Tahmin Yap)</h2>
+        <form id="forecastForm" onsubmit="handleForecastSubmit(event)">
+            <div class="form-group" style="max-width: 500px;">
+                <label for="userName">Rumuz / Kullanıcı Adı:</label>
+                <input type="text" id="userName" required placeholder="Örn: Tahminci_Bengusu">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="forecastDate">Tahmin Edilen Gün (Yarın):</label>
+                    <input type="date" id="forecastDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="submissionTime">Gönderim Saati (SS:DK:SN):</label>
+                    <input type="time" id="submissionTime" step="1" required>
+                </div>
+            </div>
+
+            <h3>LTFM Yarınki Hava Tahminleriniz:</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tmax">Tmax (°C):</label>
+                    <input type="number" id="tmax" step="0.1" required placeholder="Örn: 21.2">
+                </div>
+                <div class="form-group">
+                    <label for="tmin">Tmin (°C):</label>
+                    <input type="number" id="tmin" step="0.1" required placeholder="Örn: 13.8">
+                </div>
+                <div class="form-group">
+                    <label for="precip">Yağış (mm):</label>
+                    <input type="number" id="precip" step="0.1" min="0" required placeholder="Örn: 1.0">
+                </div>
+                <div class="form-group">
+                    <label for="wind">Max Rüzgâr (knots):</label>
+                    <input type="number" id="wind" step="0.1" min="0" required placeholder="Örn: 19.3">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <label for="justificationText" style="color: var(--dark-turkuaz); font-weight: bold;">✍️ Tahmin Gerekçesi / Analiz Notlarınız (İsteğe Bağlı):</label>
+                <textarea id="justificationText" rows="4" placeholder="Tahmininizi hangi modele veya meteorolojik verilere (örn: ECMWF rüzgâr hamlesi, ICON yağış tahmini) dayandırdığınızı buraya yazabilirsiniz..."></textarea>
+            </div>
+
+            <button type="submit" class="btn">Tahmini Kaydet ve Gönder</button>
+        </form>
+
+        <div id="forecastResult" style="display: none;"></div>
+    </div>
+
+    <!-- 3. SEKME: Check errors -->
+    <div id="check-errors" class="tab-content">
+        <h2>Check Errors (Hata Kontrolü & Ders Çıkarma)</h2>
+        <p>Gözlem verileri geldikçe dünkü tahmininizi gerçekleşen değerlerle karşılaştırın:</p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parametre</th>
+                        <th>Sizin Tahmininiz</th>
+                        <th>Gerçekleşen Gözlem</th>
+                        <th>Hata (Tahmin - Gözlem)</th>
+                        <th>Mutlak Hata (|Hata|)</th>
+                    </tr>
+                </thead>
+                <tbody id="errorTableBody">
+                    <tr><td colspan="5">Henüz tamamlanmış bir tahmin geçmişi bulunmuyor.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="lessonLearned" style="color:var(--dark-pink);">📌 Bugün Çıkarılan Zorunlu Ders (Tam 1 Cümle):</label>
+            <textarea id="lessonLearned" rows="3" placeholder="Örn: DWD ICON modelinin yüksek yağış beklentisini fazla dikkate aldım ancak ECMWF ve GFS ortalamasına sadık kalsaydım hata payım daha düşük olacaktı."></textarea>
+            <button type="button" class="btn btn-pink" onclick="saveLesson()">Dersi Kaydet</button>
+        </div>
+        <div id="lessonStatus" style="display:none;" class="info-box"></div>
+    </div>
+
+    <!-- 4. SEKME: Review progress -->
+    <div id="review-progress" class="tab-content">
+        <h2>Review Progress (Başarım & İlerleme)</h2>
+        
+        <div class="card-container">
+            <div class="card">
+                <div>Katılım Oranı</div>
+                <div class="card-value" id="statKatilim">-%</div>
+                <small id="statKatilimNote">(Henüz Yeterli Veri Yok)</small>
+            </div>
+            <div class="card">
+                <div>Toplam Tahmin</div>
+                <div class="card-value" id="statToplam">0 Gün</div>
+                <small id="statDetay">0 Zamanında / 0 Geç</small>
+            </div>
+            <div class="card">
+                <div>Ortalama MAE (Sıcaklık)</div>
+                <div class="card-value" id="statMae">- °C</div>
+                <small>Hesaplanıyor</small>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+            <h3 style="margin: 0;">Hata Trend Analizi & Tahmin Geçmişi</h3>
+            <button id="globalUndoBtn" class="btn btn-undo" style="padding: 8px 16px; font-size: 13px;" onclick="undoDeleteForecast()" disabled>↩️ Son Silinen Tahmini Geri Al</button>
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tarih</th>
+                        <th>Rumuz</th>
+                        <th>Tmax / Tmin</th>
+                        <th>Yağış / Rüzgâr</th>
+                        <th>Tahmin Gerekçesi</th>
+                        <th>Zamanında mı?</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="progressTableBody">
+                    <tr><td colspan="7">Henüz yapılmış bir tahmin bulunmuyor. Formdan tahmin girdikçe burada görünecektir.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 5. SEKME: Save your report -->
+    <div id="save-report" class="tab-content">
+        <h2>Save Your Report (Raporu Kaydet & Dışa Aktar)</h2>
+        <p>Tüm dönem performansınızı, tahmin geçmişinizi ve çıkardığınız dersleri raporlayın.</p>
+
+        <div class="info-box" id="reportSummaryBox">
+            📄 <strong>Rapor Özeti:</strong> Henüz kayıtlı tahmin bulunmamaktadır.
+        </div>
+
+        <div class="justification-box">
+            <h3>📖 Açık Kaynak Hava Tahmin Modellerinin Seçimi ve Konsensüs Kullanım Gerekçesi</h3>
+            <p>
+                Bu çalışmada İstanbul Havalimanı (LTFM) lokasyonu için hava tahmini yapılırken tek bir sayısal modele bağımlı kalmak yerine <strong>Windy.com, Meteoblue, Open-Meteo, Ventusky, Weather Underground, NOAA GFS ve DWD Open Data (ICON)</strong> olmak üzere 7 farklı uluslararası açık kaynak veri sağlayıcısı entegre edilmiştir.
+            </p>
+            <p><strong>Model Tercih Gerekçeleri:</strong></p>
+            <ul>
+                <li><strong>Windy & Ventusky:</strong> Küresel ölçekli ECMWF ve GFS modellerini yüksek çözünürlüklü 2D/3D haritalar ve meteogramlar üzerinde görselleştirerek cephesel geçişlerin takibini kolaylaştırır.</li>
+                <li><strong>Meteoblue & Open-Meteo:</strong> Çoklu model (MultiModel) topluluk tahminlerini (Ensemble) ve açık kaynaklı API altyapısını sunarak parametrik verilerin tarafsız çekilmesine olanak tanır.</li>
+                <li><strong>Weather Underground:</strong> Havalimanı çevresindeki yerel istasyon ağlarından anlık gözlem verilerinin doğrulanmasını sağlar.</li>
+                <li><strong>NOAA GFS & DWD ICON:</strong> ABD ve Almanya meteoroloji servislerinin küresel çözünürlüğü yüksek temel fiziksel atmosfer modellerini doğrudan yansıtır.</li>
+            </ul>
+            <p>
+                <strong>Konsensüs (Ortalama) Yaklaşımı:</strong> Meteorolojik tahminlerde tekil modellerin sistematik hatalarını (bias) en aza indirmek amacıyla panomuzda tüm açık kaynak verilerinin aritmetik ortalaması olan <em>"Modellerin Ortalaması (Konsensüs)"</em> sütunu oluşturulmuştur. Bu yaklaşım, Ortalama Mutlak Hatanı (MAE) düşürmede ve %70 başarı barajını korumada bilimsel bir dayanak oluşturmaktadır.
+            </p>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button class="btn" onclick="exportCSV()">📊 Verileri CSV Olarak İndir</button>
+            <button class="btn btn-pink" onclick="window.print()">🖨️ Panoyu PDF / Yazdır Yap</button>
+        </div>
+    </div>
+
+    <script>
+        let lastDeletedForecast = null;
+
+        window.onload = function() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            document.getElementById('forecastDate').value = tomorrow.toISOString().split('T')[0];
+            
+            const hours = String(today.getHours()).padStart(2, '0');
+            const minutes = String(today.getMinutes()).padStart(2, '0');
+            const seconds = String(today.getSeconds()).padStart(2, '0');
+            document.getElementById('submissionTime').value = `${hours}:${minutes}:${seconds}`;
+
+            guncelleTablolari();
+        };
+
+        function showTab(tabId, element) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => button.classList.remove('active'));
+
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+            if (element) {
+                element.classList.add('active');
+            }
+        }
+
+        function handleForecastSubmit(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('userName').value;
+            const date = document.getElementById('forecastDate').value;
+            const time = document.getElementById('submissionTime').value;
+            const tmax = document.getElementById('tmax').value;
+            const tmin = document.getElementById('tmin').value;
+            const precip = document.getElementById('precip').value;
+            const wind = document.getElementById('wind').value;
+            const justification = document.getElementById('justificationText').value;
+
+            const timeParts = time.split(':');
+            const hours = parseInt(timeParts[0], 10);
+            const minutes = parseInt(timeParts[1], 10);
+            const seconds = parseInt(timeParts[2] || 0, 10);
+
+            let isOntime = false;
+            if (hours < 21) {
+                isOntime = true;
+            } else if (hours === 21 && minutes === 0 && seconds === 0) {
+                isOntime = true;
+            }
+
+            const yeniTahmin = {
+                id: Date.now(),
+                name: name,
+                date: date,
+                time: time,
+                tmax: tmax,
+                tmin: tmin,
+                precip: precip,
+                wind: wind,
+                justification: justification,
+                isOntime: isOntime
+            };
+
+            let tahminler = JSON.parse(localStorage.getItem('ltfm_tahminler') || '[]');
+            tahminler.push(yeniTahmin);
+            localStorage.setItem('ltfm_tahminler', JSON.stringify(tahminler));
+
+            const resultDiv = document.getElementById('forecastResult');
+            resultDiv.style.display = 'block';
+
+            let statusHTML = isOntime 
+                ? `<div class="status-box status-ontime">✅ TAHMİN ZAMANINDA ALINDI (Saat: ${time} <= 21:00:00)</div>`
+                : `<div class="status-box status-late">❌ TAHMİN GEÇ KALDI! (Saat: ${time} > 21:00:00) - Ceza Puanı İşlendi</div>`;
+
+            resultDiv.innerHTML = `
+                <hr style="margin-top: 20px;">
+                <h3>📋 Tahmin Kartınız Başarıyla Kaydedildi!</h3>
+                ${statusHTML}
+                <table>
+                    <tr><th>Rumuz</th><td>${name}</td></tr>
+                    <tr><th>Tarih</th><td>${date}</td></tr>
+                    <tr><th>Tmax / Tmin</th><td>${tmax} °C / ${tmin} °C</td></tr>
+                    <tr><th>Yağış / Rüzgâr</th><td>${precip} mm / ${wind} kt</td></tr>
+                    <tr><th>Gerekçe / Not</th><td>${justification || '<i>Gerekçe belirtilmedi.</i>'}</td></tr>
+                </table>
+            `;
+
+            guncelleTablolari();
+        }
+
+        function guncelleTablolari() {
+            const tahminler = JSON.parse(localStorage.getItem('ltfm_tahminler') || '[]');
+            const progressBody = document.getElementById('progressTableBody');
+            const undoBtn = document.getElementById('globalUndoBtn');
+
+            if (undoBtn) {
+                undoBtn.disabled = !lastDeletedForecast;
+            }
+            
+            if (tahminler.length === 0) {
+                progressBody.innerHTML = '<tr><td colspan="7">Henüz yapılmış bir tahmin bulunmuyor. Formdan tahmin girdikçe burada görünecektir.</td></tr>';
+                document.getElementById('statKatilim').innerText = '-%';
+                document.getElementById('statKatilimNote').innerText = '(Henüz Yeterli Veri Yok)';
+                document.getElementById('statToplam').innerText = '0 Gün';
+                document.getElementById('statDetay').innerText = '0 Zamanında / 0 Geç';
+                document.getElementById('reportSummaryBox').innerHTML = '📄 <strong>Rapor Özeti:</strong> Henüz kayıtlı tahmin bulunmamaktadır.';
+                return;
+            }
+
+            progressBody.innerHTML = '';
+            let zamanindaSayisi = 0;
+
+            tahminler.forEach((t, index) => {
+                if(t.isOntime) zamanindaSayisi++;
+
+                const row = document.createElement('tr');
+                const badge = t.isOntime 
+                    ? '<span style="color:green; font-weight:bold;">✅ Zamanında</span>' 
+                    : `<span style="color:red; font-weight:bold;">❌ Geç (${t.time})</span>`;
+
+                row.innerHTML = `
+                    <td>${t.date}</td>
+                    <td>${t.name}</td>
+                    <td>${t.tmax} °C / ${t.tmin} °C</td>
+                    <td>${t.precip} mm / ${t.wind} kt</td>
+                    <td style="max-width:200px; text-align:left; font-size:12px;">${t.justification || '-'}</td>
+                    <td>${badge}</td>
+                    <td>
+                        <button class="btn-danger" onclick="deleteSingleForecast(${index})">🗑️ Sil</button>
+                    </td>
+                `;
+                progressBody.appendChild(row);
+            });
+
+            const toplam = tahminler.length;
+            const katilimOrani = Math.round((zamanindaSayisi / toplam) * 100);
+            
+            document.getElementById('statKatilim').innerText = `%${katilimOrani}`;
+            document.getElementById('statKatilimNote').innerText = katilimOrani >= 70 ? '(Min. %70 Şartı Sağlandı ✅)' : '(Min. %70 Şartı Sağlanamadı ⚠️)';
+            document.getElementById('statToplam').innerText = `${toplam} Gün`;
+            document.getElementById('statDetay').innerText = `${zamanindaSayisi} Zamanında / ${toplam - zamanindaSayisi} Geç`;
+            
+            document.getElementById('reportSummaryBox').innerHTML = `📄 <strong>Rapor Özeti:</strong> Toplam ${toplam} günlük veri, %${katilimOrani} katılım başarısı içerir.`;
+        }
+
+        function deleteSingleForecast(index) {
+            let tahminler = JSON.parse(localStorage.getItem('ltfm_tahminler') || '[]');
+            const silinecek = tahminler[index];
+            if (confirm(`${silinecek.date} tarihli (${silinecek.name}) tahmini silmek istediğinizden emin misiniz?`)) {
+                lastDeletedForecast = {
+                    item: silinecek,
+                    index: index
+                };
+                tahminler.splice(index, 1);
+                localStorage.setItem('ltfm_tahminler', JSON.stringify(tahminler));
+                guncelleTablolari();
+            }
+        }
+
+        function undoDeleteForecast() {
+            if (!lastDeletedForecast) return;
+            let tahminler = JSON.parse(localStorage.getItem('ltfm_tahminler') || '[]');
+            if (lastDeletedForecast.index <= tahminler.length) {
+                tahminler.splice(lastDeletedForecast.index, 0, lastDeletedForecast.item);
+            } else {
+                tahminler.push(lastDeletedForecast.item);
+            }
+            localStorage.setItem('ltfm_tahminler', JSON.stringify(tahminler));
+            lastDeletedForecast = null;
+            guncelleTablolari();
+        }
+
+        function saveLesson() {
+            const text = document.getElementById('lessonLearned').value;
+            const status = document.getElementById('lessonStatus');
+            if(text.trim() === '') {
+                alert('Lütfen çıkarılan dersi boş bırakmayın!');
+                return;
+            }
+            status.style.display = 'block';
+            status.innerHTML = `<strong>✅ Ders Başarıyla Kaydedildi:</strong> "${text}"`;
+        }
+
+        function exportCSV() {
+            const tahminler = JSON.parse(localStorage.getItem('ltfm_tahminler') || '[]');
+            if (tahminler.length === 0) {
+                alert("İndirilecek kayıtlı tahmin verisi bulunamadı!");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Rumuz,Tarih,Saat,Tmax,Tmin,Yagis,Ruzgar,Gerekce,Durum\n";
+            tahminler.forEach(t => {
+                const safeJustification = (t.justification || '').replace(/,/g, ' ');
+                csvContent += `${t.name},${t.date},${t.time},${t.tmax},${t.tmin},${t.precip},${t.wind},"${safeJustification}",${t.isOntime ? 'Zamaninda' : 'Gec'}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "LTFM_Tahmin_Raporu.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
